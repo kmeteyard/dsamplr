@@ -1,0 +1,67 @@
+---
+title: "Introduction to dsamplr"
+author: "Kieran Meteyard"
+date: "March 2019"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to dsamplr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r echo=FALSE}
+library(dsamplr)
+```
+
+
+The dsamplr package provides a simple interface for sampling from a chosen statistical distribution. It allows the user to specify:
+
+- The required number of samples
+- The chosen distribtuion (currently limited to normal, poisson and binomial)
+- Parameters for the chosen distribution
+
+The package defines an S3 class object 'dsamplr' with a specified summary method. 
+
+## Examples 
+Sample 10 random draws from a normal distribution 
+
+```{r}
+dsamplr(10, "normal")
+```
+
+Sample 100 draws from a poisson distribution with lambda = 10 
+
+```{r}
+dsamplr(10, "poisson", lambda = 10)
+```
+
+The documentation for the underlying base R functions rnorm, rpois and rbinom provide more information on permitted inputs.
+
+## dsamplr class
+
+The output is returned as an S3 object of class 'dsamplr'. This is simply a list with samples stored at $sample and the distribution stored at $distribution. A summary method is also defined as shown below. 
+
+```{r}
+draw <- dsamplr(100, "normal")
+
+draw$sample
+
+draw$distribution
+
+summary(draw)
+```
+
+## Pitfalls
+Make sure to input the distribution as a string. Avoid the following:
+
+```{r, error = TRUE}
+dsamplr(100, normal)
+```
+
